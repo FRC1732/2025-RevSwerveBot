@@ -18,6 +18,7 @@ import static frc.robot.subsystems.drive.DriveConstants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -58,6 +59,9 @@ public class Drive extends SubsystemBase {
   private final SysIdRoutine sysId;
   private final Alert gyroDisconnectedAlert =
       new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
+
+      private boolean isTurbo;
+      private boolean isFieldRelative;
 
   private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(moduleTranslations);
   private Rotation2d rawGyroRotation = new Rotation2d();
@@ -213,9 +217,45 @@ public class Drive extends SubsystemBase {
     }
   }
 
+
+
   /** Stops the drive. */
   public void stop() {
     runVelocity(new ChassisSpeeds());
+  }
+
+
+  public boolean isTurbo() {
+    return isTurbo;
+  }
+
+  public void setTurbo(boolean isTurbo) {
+    this.isTurbo = isTurbo;
+  }
+
+    /**
+   * Returns true if field relative mode is enabled
+   *
+   * @return true if field relative mode is enabled
+   */
+  public boolean getFieldRelative() {
+    return isFieldRelative;
+  }
+
+  /**
+   * Enables field-relative mode. When enabled, the joystick inputs specify the velocity of the
+   * robot in the frame of reference of the field.
+   */
+  public void enableFieldRelative() {
+    this.isFieldRelative = true;
+  }
+
+  /**
+   * Disables field-relative mode. When disabled, the joystick inputs specify the velocity of the
+   * robot in the frame of reference of the robot.
+   */
+  public void disableFieldRelative() {
+    this.isFieldRelative = false;
   }
 
   /**

@@ -13,23 +13,26 @@
 
 package frc.robot;
 
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
 import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
+import frc.robot.operator_interface.OISelector;
+import frc.robot.operator_interface.OperatorInterface;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -41,8 +44,8 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
 
-  // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
+    // OI devices
+    private OperatorInterface oi = new OperatorInterface() {};
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -104,6 +107,20 @@ public class RobotContainer {
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     // Configure the button bindings
+    updateOI();
+  }
+
+    /**
+   * This method scans for any changes to the connected operator interface (e.g., joysticks). If
+   * anything changed, it creates a new OI object and binds all of the buttons to commands.
+   */
+  public void updateOI() {
+    OperatorInterface prevOI = oi;
+    oi = OISelector.getOperatorInterface();
+    if (oi == prevOI) {
+      return;
+    }
+
     configureButtonBindings();
   }
 
@@ -118,33 +135,21 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
+            () -> -oi.getTranslateX(),
+            () -> -oi.getTranslateY(),
+            () -> -oi.getRotate()));
 
-    // Lock to 0° when A button is held
-    controller
-        .a()
-        .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
-                () -> new Rotation2d()));
 
-    // Switch to X pattern when X button is pressed
-    controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
     // Reset gyro to 0° when B button is pressed
-    controller
-        .b()
+    oi.resetGyroButton()
         .onTrue(
             Commands.runOnce(
                     () ->
                         drive.setPose(
                             new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                     drive)
-                .ignoringDisable(true));
+                .ignoringDisable(true));    
   }
 
   /**

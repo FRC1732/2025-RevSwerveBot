@@ -22,6 +22,10 @@ import edu.wpi.first.math.util.Units;
 
 public class DriveConstants {
   public static final double maxSpeedMetersPerSec = 4.8;
+  public static final double maxSpeedAccelerationMetersPerSecSq = 1000.0;
+  public static final double maxAngularSpeedRadiansPerSec = 2.0 * Math.PI;
+  public static final double maxAngularAccelerationRadiansPerSecSq = 5.0;
+
   public static final double odometryFrequency = 100.0; // Hz
   public static final double trackWidth = Units.inchesToMeters(26.5);
   public static final double wheelBase = Units.inchesToMeters(26.5);
@@ -76,6 +80,7 @@ public class DriveConstants {
   public static final double driveSimKs = 0.0;
   public static final double driveSimKv = 0.0789;
 
+
   // Turn motor configuration
   public static final boolean turnInverted = false;
   public static final int turnMotorCurrentLimit = 20;
@@ -111,4 +116,5 @@ public class DriveConstants {
               driveMotorCurrentLimit,
               1),
           moduleTranslations);
+
 }
