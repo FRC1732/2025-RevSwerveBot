@@ -13,10 +13,7 @@
 
 package frc.robot;
 
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
-
 import com.pathplanner.lib.auto.AutoBuilder;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -33,6 +30,7 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -44,8 +42,8 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
 
-    // OI devices
-    private OperatorInterface oi = new OperatorInterface() {};
+  // OI devices
+  private OperatorInterface oi = new OperatorInterface() {};
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -110,7 +108,7 @@ public class RobotContainer {
     updateOI();
   }
 
-    /**
+  /**
    * This method scans for any changes to the connected operator interface (e.g., joysticks). If
    * anything changed, it creates a new OI object and binds all of the buttons to commands.
    */
@@ -134,12 +132,7 @@ public class RobotContainer {
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
-            drive,
-            () -> -oi.getTranslateX(),
-            () -> -oi.getTranslateY(),
-            () -> -oi.getRotate()));
-
-
+            drive, () -> -oi.getTranslateX(), () -> -oi.getTranslateY(), () -> -oi.getRotate()));
 
     // Reset gyro to 0° when B button is pressed
     oi.resetGyroButton()
@@ -149,7 +142,7 @@ public class RobotContainer {
                         drive.setPose(
                             new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                     drive)
-                .ignoringDisable(true));    
+                .ignoringDisable(true));
   }
 
   /**

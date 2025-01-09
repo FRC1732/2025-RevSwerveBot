@@ -10,8 +10,8 @@ package frc.robot.operator_interface;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-//import frc.lib.team6328.util.Alert;
-//import frc.lib.team6328.util.Alert.AlertType;
+// import frc.lib.team6328.util.Alert;
+// import frc.lib.team6328.util.Alert.AlertType;
 
 @java.lang.SuppressWarnings({"java:S3776"})
 
@@ -20,8 +20,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class OISelector {
   private static String[] lastJoystickNames = new String[] {null, null, null, null, null, null};
-  //private static final Alert noOperatorInterfaceWarning =      new Alert("No operator controller(s) connected.", AlertType.WARNING);
-  //private static final Alert nonCompetitionOperatorInterfaceWarning =      new Alert("Non-competition operator controller connected.", AlertType.WARNING);
+  // private static final Alert noOperatorInterfaceWarning =      new Alert("No operator
+  // controller(s) connected.", AlertType.WARNING);
+  // private static final Alert nonCompetitionOperatorInterfaceWarning =      new
+  // Alert("Non-competition operator controller connected.", AlertType.WARNING);
 
   private static OperatorInterface oi = null;
 
@@ -71,7 +73,7 @@ public class OISelector {
           firstPort = port;
         } else if (secondPort == null) {
           secondPort = port;
-        } else if (thirdPort == null) { 
+        } else if (thirdPort == null) {
           thirdPort = port;
         } else {
           fourthPort = port;
@@ -80,20 +82,20 @@ public class OISelector {
     }
 
     if (firstPort != null && secondPort != null && thirdPort != null && fourthPort != null) {
-      //noOperatorInterfaceWarning.set(false);
-      //nonCompetitionOperatorInterfaceWarning.set(false);
+      // noOperatorInterfaceWarning.set(false);
+      // nonCompetitionOperatorInterfaceWarning.set(false);
       return new FullOperatorConsoleOI(firstPort, secondPort, thirdPort, fourthPort);
     } else if (firstPort != null && secondPort != null) {
-      //noOperatorInterfaceWarning.set(false);
-      //nonCompetitionOperatorInterfaceWarning.set(true);
+      // noOperatorInterfaceWarning.set(false);
+      // nonCompetitionOperatorInterfaceWarning.set(true);
       return new DualJoysticksOI(firstPort, secondPort);
     } else if (xBoxPort != null) {
-      //noOperatorInterfaceWarning.set(false);
-      //nonCompetitionOperatorInterfaceWarning.set(true);
+      // noOperatorInterfaceWarning.set(false);
+      // nonCompetitionOperatorInterfaceWarning.set(true);
       return new SingleHandheldOI(xBoxPort);
     } else {
-      //noOperatorInterfaceWarning.set(true);
-      //nonCompetitionOperatorInterfaceWarning.set(true);
+      // noOperatorInterfaceWarning.set(true);
+      // nonCompetitionOperatorInterfaceWarning.set(true);
       return new OperatorInterface() {};
     }
   }

@@ -39,10 +39,10 @@ import java.util.function.Supplier;
 
 public class DriveCommands {
   private static final double DEADBAND = 0.05;
-  //private static final double ANGLE_KP = 5.0;
-  //private static final double ANGLE_KD = 0.4;
-  //private static final double ANGLE_MAX_VELOCITY = 8.0;
-  //private static final double ANGLE_MAX_ACCELERATION = 20.0;
+  // private static final double ANGLE_KP = 5.0;
+  // private static final double ANGLE_KD = 0.4;
+  // private static final double ANGLE_MAX_VELOCITY = 8.0;
+  // private static final double ANGLE_MAX_ACCELERATION = 20.0;
 
   // for characterization
   private static final double FF_START_DELAY = 2.0; // Secs
@@ -119,10 +119,12 @@ public class DriveCommands {
     // Create PID controller
     ProfiledPIDController angleController =
         new ProfiledPIDController(
-          DriveConstants.turnKp,
+            DriveConstants.turnKp,
             0.0,
             DriveConstants.turnKd,
-            new TrapezoidProfile.Constraints(DriveConstants.maxAngularSpeedRadiansPerSec, DriveConstants.maxAngularAccelerationRadiansPerSecSq));
+            new TrapezoidProfile.Constraints(
+                DriveConstants.maxAngularSpeedRadiansPerSec,
+                DriveConstants.maxAngularAccelerationRadiansPerSecSq));
     angleController.enableContinuousInput(-Math.PI, Math.PI);
 
     // Construct command
