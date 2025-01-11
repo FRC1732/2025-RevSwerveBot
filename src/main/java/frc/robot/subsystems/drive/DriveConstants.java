@@ -38,11 +38,20 @@ public class DriveConstants {
         new Translation2d(-trackWidth / 2.0, -wheelBase / 2.0)
       };
 
+  public static final boolean frontLeftInverted = true;
+  public static final boolean frontRightInverted = false;
+  public static final boolean backLeftInverted = false;
+  public static final boolean backRightInverted = true;
+
   // Zeroed rotation values for each module, see setup instructions
-  public static final Rotation2d frontLeftZeroRotation = new Rotation2d(0.0);
-  public static final Rotation2d frontRightZeroRotation = new Rotation2d(0.0);
-  public static final Rotation2d backLeftZeroRotation = new Rotation2d(0.0);
-  public static final Rotation2d backRightZeroRotation = new Rotation2d(0.0);
+  public static final Rotation2d frontLeftZeroRotation =
+      new Rotation2d(Math.toRadians(90.0 + (frontLeftInverted ? 180 : 0)));
+  public static final Rotation2d frontRightZeroRotation =
+      new Rotation2d(Math.toRadians(0.0 + (frontRightInverted ? 180 : 0)));
+  public static final Rotation2d backLeftZeroRotation =
+      new Rotation2d(Math.toRadians(180.0 + (backLeftInverted ? 180 : 0)));
+  public static final Rotation2d backRightZeroRotation =
+      new Rotation2d(Math.toRadians(270.0 + (backRightInverted ? 180 : 0)));
 
   // Device CAN IDs
   public static final int pigeonCanId = 55;

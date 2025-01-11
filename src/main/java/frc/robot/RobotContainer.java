@@ -131,7 +131,7 @@ public class RobotContainer {
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
-            drive, () -> -oi.getTranslateX(), () -> -oi.getTranslateY(), () -> -oi.getRotate()));
+            drive, () -> -oi.getTranslateX(), () -> -oi.getTranslateY(), () -> oi.getRotate()));
 
     // Reset gyro to 0° when B button is pressed
     oi.resetGyroButton()
